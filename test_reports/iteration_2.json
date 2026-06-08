@@ -1,0 +1,57 @@
+{
+  "summary": "RETEST after welcome.tsx fix. End-to-end happy path is now working: Welcome NEXT advances state (tap 2x reaches slide 3 state, CTA label flips to 'Build My Gym'), tapping it navigates to Home (/). Home renders Plinko board, Drop CTA, stat tiles, and empty-recent card. Drop screen: risk toggles, drop animation (~1.7s), result card shows TODAY'S PROGRAM with type label + duration (saw CARDIO 30min, STRENGTH 40min). Start Workout -> /workout: cards with [-]/[+] rep/weight steppers, LOG (green) + Skip (red flame) buttons. Tap LOG -> rest timer slides up at bottom with countdown (saw 00:45) and SKIP REST button (testID: rest-timer-skip). Finish Workout -> /summary with Completed/Skipped/Time stats, badges grid (empty card when none earned), Back to Home returns to /. Recent Workouts on Home then shows the finished workout (e.g. 'CARDIO Mon, Jun 8 • 1/3 sets'). Progress tab: streak/total/week tiles, 28-day calendar with today highlighted, by-type bars, badges grid. Settings: kg/lbs + risk default toggles + Manage Exercises link + Reset All Data all present. NEW VISUAL BUG: Welcome carousel state advances but the FlatList does NOT visually scroll on react-native-web — user sees STEP 1 content (Set Up Your Exercises) on all three taps while dots and CTA label change. So Drop The Ball and Hit Beast Mode slide content is never visible on web preview. Deprecated style props ('shadow*' and props.pointerEvents) still warn in console.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Welcome FlatList carousel visual scroll",
+        "issue": "After the page-state fix, tapping NEXT correctly advances `page` state — dots indicator moves and CTA label updates to 'Build My Gym' on slide 3 — but the horizontal FlatList does not actually scroll on react-native-web. Visible STEP label in viewport stays 'STEP 1 / Set Up Your Exercises' through all 3 taps. Users on web never see slide 2 ('Drop The Ball' / kettlebell) or slide 3 ('Hit Beast Mode' / fiery kettlebell). Reference: /app/frontend/app/welcome.tsx:59-69 (scrollToIndex on pagingEnabled FlatList).",
+        "testID": "welcome-cta",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Console / React Native Web compatibility",
+        "issues": [
+          "Deprecation warning persists: '\"shadow*\" style props are deprecated. Use \"boxShadow\".' (TactileButton beastShadow and welcome.tsx iconWrap)",
+          "Deprecation warning persists: 'props.pointerEvents is deprecated. Use style.pointerEvents' — still emitted from summary.tsx Animated.View. Agent note said this was moved but /app/frontend/app/summary.tsx:56-59 still uses `pointerEvents='none'` as a prop, not inside style."
+        ]
+      }
+    ],
+    "react_native_issues": [
+      {
+        "component": "welcome.tsx FlatList horizontal paging on web",
+        "issue": "scrollToIndex on horizontal pagingEnabled FlatList does not visually scroll on react-native-web even though state updates. Replace with a controlled Animated.View / ScrollView carousel that drives translateX from `page` state, or render only the active slide. Reference: /app/frontend/app/welcome.tsx:103-140."
+      },
+      {
+        "component": "summary.tsx Animated.View pointerEvents",
+        "issue": "Still uses deprecated `pointerEvents='none'` as a prop instead of `style={{pointerEvents:'none'}}`. Reference: /app/frontend/app/summary.tsx:56-59."
+      },
+      {
+        "component": "TactileButton + welcome.tsx iconWrap shadow*",
+        "issue": "Still uses deprecated shadowColor / shadowOpacity / shadowRadius / shadowOffset on web. Migrate to boxShadow via Platform.select for web. References: /app/frontend/src/components/TactileButton.tsx and /app/frontend/app/welcome.tsx:191-194."
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix Welcome carousel visual scrolling on web: drive the slide position from `page` state via translateX (Animated.View) or render only the active slide so users actually see slides 2 and 3. State-only advance is misleading because content does not change visually.",
+    "Move `pointerEvents='none'` from Animated.View prop to style in /app/frontend/app/summary.tsx (currently still raising console warning).",
+    "Migrate `shadow*` style props to boxShadow (or wrap in Platform.select) in TactileButton and welcome.tsx iconWrap to silence persistent web deprecation warnings.",
+    "(Optional) For consistency, expose the rest timer skip button as testID 'skip-rest' too, since the request and PRD wording references 'Skip Rest'. Currently it is 'rest-timer-skip'."
+  ],
+  "critical_code_review_comments": [
+    "welcome.tsx: state advances synchronously now (good) but FlatList.scrollToIndex still doesn't move pixels on react-native-web; the FlatList approach should be replaced with a controlled paged view on web.",
+    "summary.tsx still uses deprecated pointerEvents prop despite the changelog note that it was moved to style.",
+    "workout.tsx + summary flow: when user hits Finish with pending sets, they are counted as Skipped (saw 'Completed: 1, Skipped: 2' for one logged set). This appears intentional but worth documenting in PRD."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only request)", "frontend": "~92% — full happy path works; welcome carousel has a visual-only regression and 2 deprecated-prop warnings remain"},
+  "seed_data_creation": "Created one workout via the live UI (CARDIO 30min, 1 logged set, 2 skipped). It persisted into Recent Workouts on Home as 'CARDIO Mon, Jun 8 • 1/3 sets'.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Viewport 420x900, wait_until='domcontentloaded' + time.sleep(5). Welcome NEXT now advances state correctly — tap welcome-cta 2 times to reach the 'Build My Gym' state, then tap once more to enter /(tabs). Drop animation completes in ~1.7s, wait at least 3s before checking drop-result. Rest-timer skip button testID is `rest-timer-skip` (NOT `skip-rest`). Storage clears between Playwright contexts so go through /welcome each run, or call settings_reset. Recent Workouts uses testID prefix 'history-' on Home? Actually on Home they render inside a list — verify via screenshot, the text 'CARDIO' / 'Mon, Jun 8 • 1/3 sets' appeared but no testID prefix detected on home cards.",
+  "rca_of_issue": "Welcome carousel visual regression: The state fix (setPage(nextPage) before scrollToIndex) correctly advances the React state — dots and CTA label update — but listRef.current?.scrollToIndex on a horizontal pagingEnabled FlatList on react-native-web does not translate the inner content, so the visible slide stays on index 0. Reproduction: load /welcome at 420x900, tap [data-testid='welcome-cta'] twice; dots advance from • to ••• and CTA changes to BUILD MY GYM, but title remains 'Set Up Your Exercises' and STEP label stays 'STEP 1'. Mitigation: replace the FlatList with an Animated.View driven by `translateX = -page * SCREEN_W` (with withTiming), or with a controlled ScrollView + scrollTo, or simply render only `SLIDES[page]` as a keyed View."
+}

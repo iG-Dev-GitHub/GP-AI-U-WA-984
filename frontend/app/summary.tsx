@@ -54,8 +54,8 @@ export default function Summary() {
   return (
     <SafeAreaView style={styles.root} edges={["top", "bottom"]}>
       <Animated.View
-        pointerEvents="none"
         style={[styles.goldFlash, flashStyle]}
+        pointerEvents="none"
       />
       <ScrollView contentContainerStyle={styles.content}>
         <View

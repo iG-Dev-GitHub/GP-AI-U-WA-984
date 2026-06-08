@@ -58,7 +58,11 @@ export default function Welcome() {
 
   const next = () => {
     if (page < SLIDES.length - 1) {
-      listRef.current?.scrollToIndex({ index: page + 1, animated: true });
+      const nextPage = page + 1;
+      // Update state immediately so the CTA label/UI stays in sync — Animated
+      // scroll on react-native-web does not reliably trigger onMomentumScrollEnd.
+      setPage(nextPage);
+      listRef.current?.scrollToIndex({ index: nextPage, animated: true });
     } else {
       finish();
     }
