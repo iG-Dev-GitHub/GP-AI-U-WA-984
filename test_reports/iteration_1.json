@@ -1,0 +1,73 @@
+{
+  "summary": "Mobile-first Expo web preview tested at 420x900. Walked through welcome -> home -> drop -> workout -> summary -> progress -> settings -> exercises -> reset. CRITICAL BUG: Welcome carousel 'Next' CTA (TactileButton) does not advance slides on web preview — three taps stayed on STEP 1 so the entire post-onboarding flow (Home, Drop, Workout, Summary) was unreachable through normal click-driven navigation. SKIP button is rendered but the only escape route. After navigating to the tab routes directly via URL, Settings, Progress, Exercises (add/edit/filter), and Reset All Data worked correctly and reset-then-welcome flow worked. Multiple React Native Web deprecation console warnings detected ('shadow*' style props and props.pointerEvents).",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Welcome carousel Next button",
+        "issue": "Tapping welcome-cta (Next / Build My Gym) does not advance the FlatList slides on web preview. After 3 clicks the screen still shows STEP 1, so users cannot organically reach Home. Root cause: app/welcome.tsx uses FlatList.scrollToIndex + onMomentumScrollEnd to update page state; on react-native-web, scrollToIndex on a horizontal pagingEnabled FlatList does not reliably fire onMomentumScrollEnd, leaving `page` stuck at 0 — so next() keeps trying to scroll to index 1 and never reaches finish(). This blocks the primary onboarding flow.",
+        "testID": "welcome-cta",
+        "priority": "CRITICAL"
+      },
+      {
+        "component": "Drop carousel / FlatList paging",
+        "issue": "Because of the welcome blocker, the Drop screen, kettlebell drop animation, result card, Start Workout, workout screen, rest timer, finish flow, and summary screen could not be exercised via UI taps. They are reachable via direct router push but unreachable from a fresh launch.",
+        "testID": "welcome-cta -> home-drop-cta",
+        "priority": "CRITICAL"
+      }
+    ],
+    "integration_issues": [
+      {
+        "flow": "First-launch onboarding -> Home",
+        "issue": "User cannot proceed past slide 1 with the visible CTA; only SKIP works. firstLaunchDone never gets set through Next path. This breaks the documented user journey (Build My Gym -> Home).",
+        "affected_testIDs": ["welcome-cta", "welcome-dots"]
+      }
+    ],
+    "design_issues": [
+      {
+        "screen": "Console / React Native Web compatibility",
+        "issues": [
+          "Deprecation warning: 'shadow*' style props are deprecated. Use 'boxShadow'. (TactileButton beastShadow, welcome iconWrap shadow*)",
+          "Deprecation warning: props.pointerEvents is deprecated. Use style.pointerEvents (summary.tsx Animated.View)"
+        ]
+      }
+    ],
+    "react_native_issues": [
+      {
+        "component": "welcome.tsx FlatList paging",
+        "issue": "Programmatic scrollToIndex on horizontal pagingEnabled FlatList does not trigger onMomentumScrollEnd on react-native-web, so the page index state never updates. Replace FlatList-based paging with a controlled index + transform/translate, or update `page` state directly inside next() before/after scrollToIndex. Reference: /app/frontend/app/welcome.tsx:54-65."
+      },
+      {
+        "component": "TactileButton + welcome iconWrap shadow props",
+        "issue": "Using deprecated shadow* style props on web. Migrate to boxShadow for web or guard with Platform.select. Reference: /app/frontend/src/components/TactileButton.tsx:90-95 and /app/frontend/app/welcome.tsx:186-190."
+      },
+      {
+        "component": "summary.tsx Animated.View pointerEvents",
+        "issue": "Uses deprecated pointerEvents prop. Move to style.pointerEvents. Reference: /app/frontend/app/summary.tsx:56-58."
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "FIX Welcome 'Next' CTA: update `page` state directly in next() (e.g. setPage(idx => idx+1) then scrollToIndex) instead of relying solely on onMomentumScrollEnd; or replace FlatList with a controlled paged view. This is currently blocking the onboarding -> home flow on web.",
+    "After fixing welcome, re-run end-to-end Plinko drop/workout/summary flow tests.",
+    "Migrate deprecated shadow* style props to boxShadow (TactileButton beastShadow, welcome iconWrap) for web compatibility.",
+    "Migrate Animated.View pointerEvents prop to style.pointerEvents in summary.tsx."
+  ],
+  "critical_code_review_comments": [
+    "welcome.tsx relies on onMomentumScrollEnd to update `page` after a programmatic scrollToIndex; on web this callback often does not fire, leaving navigation broken. Update local state synchronously.",
+    "workout.tsx uses reps = -1 as a sentinel for 'skipped' which is implicit and can fragile (negative reps adjust path forces reset). Consider an explicit `skipped: boolean` field on the set type.",
+    "drop.tsx builds a long `withSequence` chain at runtime — fine functionally but could be simplified by using an array helper for readability.",
+    "Several files (workout.tsx, progress.tsx, drop.tsx) are growing past ~300 lines; consider splitting render helpers."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "N/A (frontend-only request)", "frontend": "~55% — onboarding broken, but settings/exercises/progress/reset verified"},
+  "seed_data_creation": "Added one TEST_PlinkoPush exercise via the + flow; it persisted and rendered. Subsequent Reset All Data cleared everything and returned to /welcome.",
+  "retest_needed": true,
+  "should_main_agent_self_test": false,
+  "context_for_next_testing_agent": "Use viewport 420x900 and wait_until='domcontentloaded' + time.sleep(5-7) (per main agent note — networkidle returns blank). Direct routes used: /, /drop, /workout, /summary, /progress, /settings, /exercises, /welcome. testIDs verified live: welcome-dots, welcome-skip, welcome-cta, home-drop-cta, stat-streak/week/total, empty-recent, drop-back, drop-button, risk-easy/beast, drop-result, drop-start-workout, workout-back, workout-progress, workout-finish, set-{ex}-{set}-log/skip/rep-plus/rep-minus/wt-plus/wt-minus, summary-completed/skipped/time/done/drop-again/pr-card, progress-streak/total/week/calendar, history-*, unit-kg/lbs, risk-default-easy/beast, settings-manage-exercises, settings-reset, reset-confirm/cancel, exercises-back/add, filter-all/recovery/cardio/strength/beast, exercise-{id}, edit-{id}, delete-{id}, exercise-name/reps/weight/duration/save/cancel, cat-{category}. Once welcome Next is fixed, drop animation completion takes ~1.7s — wait at least 3s before checking drop-result.",
+  "rca_of_issue": "RCA — Welcome 'Next' button stuck on STEP 1:\n1. Reproduction: open https://workout-drop.preview.emergentagent.com/welcome at 420x900 viewport; click [data-testid=\"welcome-cta\"] up to 3 times; screen never advances past STEP 1.\n2. Code path: welcome.tsx next() calls listRef.current?.scrollToIndex({index: page+1, animated:true}); page only updates inside onMomentumScrollEnd which fires from user-driven momentum, not always from programmatic scroll on react-native-web FlatList.\n3. Result: page state stays 0, next() always tries to scroll to 1, finish() is never invoked, user cannot reach Home. SKIP works because it calls finish() directly.\n4. Mitigation: In next(), call setPage(p => Math.min(p+1, SLIDES.length-1)) immediately AND call scrollToIndex; in finish branch (if page === SLIDES.length-1) call finish() directly. Alternative: replace FlatList with controlled Animated.View carousel."
+}
