@@ -1,22 +1,17 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
-  Dimensions,
-  FlatList,
   Image,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import TactileButton from "@/src/components/TactileButton";
 import { getSettings, saveSettings } from "@/src/data/store";
-
-const { width: SCREEN_W } = Dimensions.get("window");
 
 const SLIDES = [
   {
@@ -25,6 +20,7 @@ const SLIDES = [
     body: "Build your gym. Pick from our starter pack or roll your own.",
     icon: "barbell" as const,
     accent: "#00D1FF",
+    image: null as number | null,
   },
   {
     key: "2",
@@ -32,7 +28,7 @@ const SLIDES = [
     body: "Each day, drop the kettlebell on the Plinko board. Where it lands is your workout.",
     icon: "ellipse" as const,
     accent: "#00FF7A",
-    isBall: true,
+    image: require("../assets/images/plinko/kettlebell.png"),
   },
   {
     key: "3",
@@ -40,39 +36,27 @@ const SLIDES = [
     body: "Edges of the board mean HIIT. Push limits, unlock badges, build streaks.",
     icon: "flame" as const,
     accent: "#FF3B30",
+    image: require("../assets/images/plinko/kettlebell_fire.png"),
   },
 ];
-
-const KETTLEBELL = require("../assets/images/plinko/kettlebell.png");
-const KETTLEBELL_FIRE = require("../assets/images/plinko/kettlebell_fire.png");
 
 export default function Welcome() {
   const router = useRouter();
   const [page, setPage] = useState(0);
-  const listRef = useRef<FlatList>(null);
-
-  const onMomentum = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const idx = Math.round(e.nativeEvent.contentOffset.x / SCREEN_W);
-    setPage(idx);
-  };
 
   const next = () => {
-    if (page < SLIDES.length - 1) {
-      const nextPage = page + 1;
-      // Update state immediately so the CTA label/UI stays in sync — Animated
-      // scroll on react-native-web does not reliably trigger onMomentumScrollEnd.
-      setPage(nextPage);
-      listRef.current?.scrollToIndex({ index: nextPage, animated: true });
-    } else {
-      finish();
-    }
+    if (page < SLIDES.length - 1) setPage(page + 1);
+    else finish();
   };
 
   const finish = async () => {
     const s = await getSettings();
     await saveSettings({ ...s, firstLaunchDone: true });
-    router.replace("/(tabs)");
+    router.replace("/");
   };
+
+  const slide = SLIDES[page];
+  const last = page === SLIDES.length - 1;
 
   return (
     <SafeAreaView style={styles.root} edges={["top", "bottom"]}>
@@ -100,51 +84,36 @@ export default function Welcome() {
         </Text>
       </View>
 
-      <FlatList
-        ref={listRef}
-        data={SLIDES}
-        horizontal
-        pagingEnabled
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(i) => i.key}
-        onMomentumScrollEnd={onMomentum}
-        renderItem={({ item, index }) => (
-          <View style={[styles.slide, { width: SCREEN_W }]}>
-            <View
-              style={[
-                styles.iconWrap,
-                { borderColor: item.accent, shadowColor: item.accent },
-              ]}
-            >
-              {item.isBall ? (
-                <Image
-                  source={index === 2 ? KETTLEBELL_FIRE : KETTLEBELL}
-                  style={{ width: 140, height: 140 }}
-                  resizeMode="contain"
-                />
-              ) : index === 2 ? (
-                <Image
-                  source={KETTLEBELL_FIRE}
-                  style={{ width: 140, height: 140 }}
-                  resizeMode="contain"
-                />
-              ) : (
-                <Ionicons name={item.icon} size={120} color={item.accent} />
-              )}
-            </View>
-            <Text style={styles.label}>STEP {index + 1}</Text>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.body}>{item.body}</Text>
-          </View>
-        )}
-      />
+      <View style={styles.slide}>
+        <View
+          style={[
+            styles.iconWrap,
+            { borderColor: slide.accent, shadowColor: slide.accent },
+          ]}
+        >
+          {slide.image ? (
+            <Image
+              source={slide.image}
+              style={{ width: 160, height: 160 }}
+              resizeMode="contain"
+            />
+          ) : (
+            <Ionicons name={slide.icon} size={130} color={slide.accent} />
+          )}
+        </View>
+        <Text style={styles.label}>STEP {page + 1}</Text>
+        <Text testID="welcome-title" style={styles.title}>
+          {slide.title}
+        </Text>
+        <Text style={styles.body}>{slide.body}</Text>
+      </View>
 
       <View style={styles.ctaWrap}>
         <TactileButton
           testID="welcome-cta"
-          title={page === SLIDES.length - 1 ? "Build My Gym" : "Next"}
-          icon={page === SLIDES.length - 1 ? "construct" : "arrow-forward"}
-          variant={page === SLIDES.length - 1 ? "primary" : "secondary"}
+          title={last ? "Build My Gym" : "Next"}
+          icon={last ? "construct" : "arrow-forward"}
+          variant={last ? "primary" : "secondary"}
           onPress={next}
         />
       </View>
