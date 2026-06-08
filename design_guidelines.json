@@ -1,0 +1,141 @@
+{
+  "project_info": {
+    "name": "Workout Drop Plinko Gym",
+    "description": "Offline workout tracker with Plinko game mechanics.",
+    "theme": "Dark",
+    "archetype": "Electric & Neon (7) mixed with Performance Pro (2)",
+    "rules": [
+      "App name MUST NOT be shown on any screens.",
+      "Strict Hacksaw Gaming Plinko palette: dark grey/black board, neon blue/green pegs, specific cell colors.",
+      "Flat cartoonish art style. Use 2px solid strokes and bright glowing borders.",
+      "No user authentication, fully offline using localStorage.",
+      "Every interactive element must include data-testid."
+    ]
+  },
+  "typography": {
+    "heading_font": "Outfit",
+    "body_font": "Chivo",
+    "scales": {
+      "h1": "text-4xl sm:text-5xl font-black tracking-tighter uppercase",
+      "h2": "text-2xl sm:text-3xl font-extrabold tracking-tight",
+      "h3": "text-xl sm:text-2xl font-bold",
+      "body": "text-base font-normal leading-relaxed",
+      "label": "text-xs font-bold tracking-[0.2em] uppercase"
+    }
+  },
+  "colors": {
+    "background": {
+      "main": "#050505",
+      "surface": "#121214",
+      "surface_elevated": "#1A1A1E",
+      "beast_mode_bg": "#2A0808"
+    },
+    "plinko": {
+      "peg_blue": "#00D1FF",
+      "peg_green": "#00FF55",
+      "cell_recovery": "#007AFF",
+      "cell_cardio": "#34C759",
+      "cell_strength": "#FFCC00",
+      "cell_beast": "#FF3B30"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A1A1AA",
+      "disabled": "#52525B"
+    },
+    "accents": {
+      "pr_gold": "#FFD700",
+      "beast_fire": "#FF3B30",
+      "border": "#27272A"
+    }
+  },
+  "spacing_and_layout": {
+    "global_padding": "p-4 sm:p-6",
+    "container": "w-full max-w-md mx-auto flex flex-col min-h-screen bg-[#050505]",
+    "border_radius": "rounded-2xl",
+    "borders": "border-2 border-[#27272A]"
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#00D1FF] text-black font-black uppercase tracking-widest py-4 px-6 rounded-2xl border-b-4 border-[#0099CC] active:translate-y-1 active:border-b-0 transition-all",
+      "beast": "bg-[#FF3B30] text-white font-black uppercase tracking-widest py-4 px-6 rounded-2xl border-b-4 border-[#B22019] shadow-[0_0_20px_rgba(255,59,48,0.5)] active:translate-y-1 active:border-b-0 transition-all",
+      "secondary": "bg-[#1A1A1E] text-white font-bold py-3 px-6 rounded-xl border-2 border-[#27272A] active:bg-[#27272A] transition-all"
+    },
+    "cards": {
+      "workout_card": "bg-[#121214] border-2 border-[#27272A] rounded-2xl p-5 flex flex-col gap-3 shadow-md",
+      "plinko_cell": "flex flex-col items-center justify-center rounded-lg border-2 font-black text-sm h-16 shadow-[inset_0_-4px_0_rgba(0,0,0,0.3)]",
+      "badge": "bg-[#1A1A1E] border-2 border-[#FFD700] rounded-full p-4 flex items-center justify-center text-[#FFD700] shadow-[0_0_15px_rgba(255,215,0,0.2)]"
+    },
+    "inputs": {
+      "text": "bg-[#050505] border-2 border-[#27272A] rounded-xl px-4 py-3 text-white focus:border-[#00D1FF] focus:outline-none transition-colors"
+    }
+  },
+  "screens": {
+    "welcome": {
+      "features": ["3 slides: Set up exercises, Drop the ball, Hit Beast Mode", "Button: Build My Gym"],
+      "layout_rules": "Full screen carousel, prominent bold imagery/icons, bottom sticky CTA. Use framer-motion for slide transitions."
+    },
+    "main": {
+      "features": ["Plinko board static preview", "Drop for Workout CTA", "Recent workouts list", "Week streak counter"],
+      "layout_rules": "Plinko board hero section takes top 40%. Dark flat bento boxes for recent stats below."
+    },
+    "drop_screen": {
+      "features": ["Interactive Plinko board (12 rows)", "Risk Level selector (Easy/Beast)", "Drop CTA", "Falling kettlebell animation"],
+      "layout_rules": "Board takes up most of the viewport. Toggle and Drop button locked to bottom safe area."
+    },
+    "workout": {
+      "features": ["Exercise list with Set/Rep/Weight inputs", "Log Set button", "Rest Timer countdown", "Skip button"],
+      "layout_rules": "Scrollable list of thick dark cards. Timer sticky at top or bottom."
+    },
+    "summary": {
+      "features": ["Completed vs Skipped sets", "PR flashes (gold)", "Total workout time", "Badges earned (Full Drop, Beast Mode)"],
+      "layout_rules": "Celebratory UI, large badge displays, high contrast gold accents for PRs."
+    },
+    "progress": {
+      "features": ["Workout history timeline", "Performance charts", "Badges grid", "Calendar streak tracker"],
+      "layout_rules": "Bento grid for stats. Use Shadcn/Recharts in neon colors for data visualization."
+    },
+    "settings": {
+      "features": ["Weight unit toggle (kg default)", "Manage exercises (Add/Edit/Delete)", "Reset local data"],
+      "layout_rules": "Standard mobile settings list, thick row items, destructive red buttons for reset."
+    }
+  },
+  "motion_and_interaction": {
+    "beast_mode_hit": "Screen pulses red, background shifts to #2A0808, fire particle effect using CSS or framer-motion.",
+    "pr_alert": "Gold flash overlay (opacity 0 to 1 to 0), scale up text animation.",
+    "plinko_drop": "Physics-based bounce effect. Use framer-motion keyframes to animate a kettlebell icon hitting dots and landing in a colored cell.",
+    "general": "Snappy, spring-based interactions for all buttons and interactive cards."
+  },
+  "icons_library": "phosphor-icons (Weight: fill for bold cartoonish look)",
+  "media": {
+    "images": [
+      {
+        "url": "https://images.unsplash.com/photo-1653647358769-c0465db60293?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzNTl8MHwxfHNlYXJjaHwyfHxrZXR0bGViZWxsJTIwZGFyayUyMGJhY2tncm91bmR8ZW58MHx8fHwxNzgwOTEzMjA2fDA&ixlib=rb-4.1.0&q=85",
+        "category": "Kettlebell Base",
+        "description": "Dark kettlebell, use for Plinko ball visual reference or as an intro background."
+      },
+      {
+        "url": "https://images.pexels.com/photos/6727768/pexels-photo-6727768.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "category": "Neon Geometry",
+        "description": "Neon geometric shapes on dark background. Good for Welcome screen backgrounds or Beast mode texture."
+      },
+      {
+        "url": "https://images.pexels.com/photos/27810157/pexels-photo-27810157.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+        "category": "Action Kettlebell",
+        "description": "Rusty kettlebell on gym floor. Ideal for Workout Summary background with dark overlay."
+      }
+    ]
+  },
+  "instructions_to_main_agent": [
+    "Ensure 'react-router-dom' is used to navigate the 7 distinct screens.",
+    "Build Plinko board using an HTML/Tailwind CSS grid. 12 rows of dots (pegs). Bottom row contains 7 cells colored according to 'plinko' palette.",
+    "Kettlebell ball: Use a Phosphor <Barbell /> or <Weight /> icon styled with metallic colors and drop-shadow, unless rendering custom SVG.",
+    "DO NOT show the app name text anywhere on the screen layout.",
+    "All components must be .js or .jsx (not .tsx).",
+    "Build custom toggle for Risk Level: Easy (Blue/Green dominant) vs Beast (Red dominant).",
+    "When Beast Mode hits, add a conditional class to the main wrapper to change the background to 'beast_mode_bg' and add a red glow.",
+    "Implement all buttons with 'tactile' 3D flat styling (border-b-4). Strip away standard Shadcn thin borders.",
+    "Use localStorage for all data persistence (Workout history, exercises, settings).",
+    "Add data-testid attributes to every button, input, and interactive card."
+  ]
+}
