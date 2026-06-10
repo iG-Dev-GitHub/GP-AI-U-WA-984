@@ -1,0 +1,135 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21189abf05e3c4eea820f04727c85fd0, type: 3}
+  m_Name: ExerciseDatabase
+  m_EditorClassIdentifier: 
+  seedExercises:
+  - id: ex-stretch-hamstring
+    name: Hamstring Stretch
+    category: 0
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 60
+  - id: ex-stretch-shoulder
+    name: Shoulder Stretch
+    category: 0
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 45
+  - id: ex-stretch-childpose
+    name: 'Child''s Pose'
+    category: 0
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 60
+  - id: ex-stretch-pigeon
+    name: Pigeon Pose
+    category: 0
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 60
+  - id: ex-stretch-cobra
+    name: Cobra Stretch
+    category: 0
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 45
+  - id: ex-cardio-jumprope
+    name: Jump Rope
+    category: 1
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 180
+  - id: ex-cardio-jumpingjacks
+    name: Jumping Jacks
+    category: 1
+    defaultReps: 50
+    defaultWeight: 0
+    defaultDurationSec: 0
+  - id: ex-cardio-highknees
+    name: High Knees
+    category: 1
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 60
+  - id: ex-cardio-runinplace
+    name: Run In Place
+    category: 1
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 300
+  - id: ex-cardio-mountainclimb
+    name: Mountain Climbers
+    category: 1
+    defaultReps: 30
+    defaultWeight: 0
+    defaultDurationSec: 0
+  - id: ex-str-pushup
+    name: Push-Ups
+    category: 2
+    defaultReps: 12
+    defaultWeight: 0
+    defaultDurationSec: 0
+  - id: ex-str-squat
+    name: Bodyweight Squat
+    category: 2
+    defaultReps: 15
+    defaultWeight: 0
+    defaultDurationSec: 0
+  - id: ex-str-deadlift
+    name: Deadlift
+    category: 2
+    defaultReps: 8
+    defaultWeight: 60
+    defaultDurationSec: 0
+  - id: ex-str-bench
+    name: Bench Press
+    category: 2
+    defaultReps: 8
+    defaultWeight: 40
+    defaultDurationSec: 0
+  - id: ex-str-overhead
+    name: Overhead Press
+    category: 2
+    defaultReps: 8
+    defaultWeight: 25
+    defaultDurationSec: 0
+  - id: ex-str-row
+    name: Bent-Over Row
+    category: 2
+    defaultReps: 10
+    defaultWeight: 30
+    defaultDurationSec: 0
+  - id: ex-str-plank
+    name: Plank
+    category: 2
+    defaultReps: 1
+    defaultWeight: 0
+    defaultDurationSec: 60
+  - id: ex-beast-burpee
+    name: Burpees
+    category: 3
+    defaultReps: 15
+    defaultWeight: 0
+    defaultDurationSec: 0
+  - id: ex-beast-kbswing
+    name: Kettlebell Swing
+    category: 3
+    defaultReps: 20
+    defaultWeight: 16
+    defaultDurationSec: 0
+  - id: ex-beast-thruster
+    name: Thrusters
+    category: 3
+    defaultReps: 12
+    defaultWeight: 20
+    defaultDurationSec: 0

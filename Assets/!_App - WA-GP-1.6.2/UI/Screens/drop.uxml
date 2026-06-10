@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="root" class="screen" style="flex-grow: 1;">
+        <ui:VisualElement name="header" class="header">
+            <ui:VisualElement name="back" class="icon-btn" />
+            <ui:Label text="DROP ZONE" class="header-title" />
+            <ui:VisualElement style="width: 36px;" />
+        </ui:VisualElement>
+
+        <ui:VisualElement style="padding-left: 16px; padding-right: 16px; padding-bottom: 12px;">
+            <ui:Label text="RISK LEVEL" class="risk-label" />
+            <ui:VisualElement name="risk-row" class="risk-row" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="board-wrap" style="flex-grow: 1; justify-content: center; padding-left: 16px; padding-right: 16px;">
+            <ui:VisualElement name="plinko-wrap" class="plinko-wrap" />
+        </ui:VisualElement>
+
+        <ui:VisualElement name="bottom-host" />
+    </ui:VisualElement>
+</ui:UXML>

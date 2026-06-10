@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="root" class="screen" style="flex-grow: 1;">
+        <ui:ScrollView name="scroll" mode="Vertical" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" style="flex-grow: 1;">
+            <ui:VisualElement name="content" class="pad-16" />
+        </ui:ScrollView>
+    </ui:VisualElement>
+</ui:UXML>

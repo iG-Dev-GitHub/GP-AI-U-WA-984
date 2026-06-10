@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="root" class="screen" style="flex-grow: 1;">
+        <ui:VisualElement name="header" class="header">
+            <ui:VisualElement name="back" class="icon-btn" />
+            <ui:Label text="EXERCISES" class="header-title" />
+            <ui:VisualElement name="add" class="icon-btn icon-btn--accent" />
+        </ui:VisualElement>
+
+        <ui:ScrollView name="chips-scroll" mode="Horizontal" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden">
+            <ui:VisualElement name="chips-row" class="chips-row" />
+        </ui:ScrollView>
+
+        <ui:ScrollView name="scroll" mode="Vertical" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" style="flex-grow: 1;">
+            <ui:VisualElement name="content" class="pad-16" />
+        </ui:ScrollView>
+
+        <ui:VisualElement name="modal-host" style="position: absolute; left: 0; top: 0; right: 0; bottom: 0; display: none;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,19 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="root" class="screen" style="flex-grow: 1;">
+        <ui:VisualElement class="welcome-skip-row">
+            <ui:VisualElement name="dots" style="flex-direction: row; align-items: center;" />
+            <ui:Label name="skip" text="SKIP" class="welcome-skip" />
+        </ui:VisualElement>
+        <ui:VisualElement class="welcome-slide">
+            <ui:VisualElement name="icon-wrap" class="welcome-icon-wrap">
+                <ui:VisualElement name="icon-host" style="align-items: center; justify-content: center;" />
+            </ui:VisualElement>
+            <ui:Label name="step" text="STEP 1" class="welcome-step" />
+            <ui:Label name="title" text="" class="welcome-title" />
+            <ui:Label name="body" text="" class="welcome-body" />
+        </ui:VisualElement>
+        <ui:VisualElement class="cta-wrap">
+            <ui:VisualElement name="cta-host" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p Assets/WorkoutDrop/Art/Sprites Assets/WorkoutDrop/Art/Fonts)",
+      "Bash(cp Source/frontend/assets/images/plinko/kettlebell.png        Assets/WorkoutDrop/Art/Sprites/kettlebell.png)",
+      "Bash(cp Source/frontend/assets/images/plinko/kettlebell_fire.png   Assets/WorkoutDrop/Art/Sprites/kettlebell_fire.png)",
+      "Bash(cp Source/frontend/assets/images/plinko/badge_full_drop.png   Assets/WorkoutDrop/Art/Sprites/badge_full_drop.png)",
+      "Bash(cp Source/frontend/assets/images/plinko/badge_beast_mode.png  Assets/WorkoutDrop/Art/Sprites/badge_beast_mode.png)",
+      "Bash(python3 *)",
+      "Bash(git check-ignore *)"
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="root" class="screen" style="flex-grow: 1;">
+        <ui:VisualElement name="header" class="workout-header">
+            <ui:VisualElement name="back" class="icon-btn" />
+            <ui:VisualElement style="align-items: center;">
+                <ui:Label name="eyebrow" text="" class="workout-eyebrow" />
+                <ui:Label name="time" text="00:00" class="workout-time" />
+            </ui:VisualElement>
+            <ui:VisualElement name="progress-chip" class="progress-chip">
+                <ui:Label name="progress-text" text="0/0" class="progress-chip__text" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <ui:ScrollView name="scroll" mode="Vertical" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" style="flex-grow: 1;">
+            <ui:VisualElement name="content" class="pad-16" />
+        </ui:ScrollView>
+
+        <ui:VisualElement name="rest-host" />
+    </ui:VisualElement>
+</ui:UXML>

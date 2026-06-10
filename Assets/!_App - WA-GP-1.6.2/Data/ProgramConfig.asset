@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73f79c05a25365c2e0d2e12c215ed1e9, type: 3}
+  m_Name: ProgramConfig
+  m_EditorClassIdentifier: 
+  programs:
+  - programType: 0
+    label: Recovery
+    tagline: Light stretching
+    durationMin: 20
+    setsPerExercise: 1
+    numExercises: 3
+  - programType: 1
+    label: Cardio
+    tagline: Run & jump
+    durationMin: 30
+    setsPerExercise: 1
+    numExercises: 3
+  - programType: 2
+    label: Strength
+    tagline: Lift heavy
+    durationMin: 40
+    setsPerExercise: 3
+    numExercises: 4
+  - programType: 3
+    label: Beast Mode
+    tagline: Max HIIT + bonus
+    durationMin: 45
+    setsPerExercise: 4
+    numExercises: 5
