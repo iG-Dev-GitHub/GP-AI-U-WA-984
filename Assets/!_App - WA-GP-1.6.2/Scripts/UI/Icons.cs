@@ -6,8 +6,9 @@ namespace WorkoutDrop.UI
 {
     /// <summary>
     /// Glyph-based icon system replacing the web app's Ionicons.
-    /// Each logical icon maps to a Unicode glyph rendered with the body font; missing
-    /// glyphs fall back to the device system font (which also supplies emoji on Android).
+    /// Each logical icon maps to a Unicode glyph rendered with the body font; emoji and
+    /// symbol glyphs resolve to the bundled NotoEmoji SDF via the Panel Text Settings asset
+    /// (with the device system font as a last resort).
     /// Centralised so the mapping can be swapped for a dedicated icon font later.
     /// </summary>
     public static class Icons

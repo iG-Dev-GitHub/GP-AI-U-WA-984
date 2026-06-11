@@ -62,6 +62,7 @@ namespace WorkoutDrop.UI
             _panel = ScriptableObject.CreateInstance<PanelSettings>();
             _panel.name = "WorkoutDropPanelSettings";
             _panel.themeStyleSheet = theme;
+            if (_config.panelTextSettings != null) _panel.textSettings = _config.panelTextSettings;
             _panel.scaleMode = PanelScaleMode.ScaleWithScreenSize;
             _panel.screenMatchMode = PanelScreenMatchMode.MatchWidthOrHeight;
             _panel.referenceResolution = new Vector2Int(390, 844); // portrait phone baseline
@@ -128,8 +129,24 @@ namespace WorkoutDrop.UI
                 return;
             }
 
+            AddBundledFallbacks(body);
             AddOsFallbacks(body);
             _root.style.unityFontDefinition = new StyleFontDefinition(FontDefinition.FromSDFFont(body));
+        }
+
+        /// <summary>
+        /// Put the fonts referenced by the Panel Text Settings asset (bundled NotoEmoji SDF) at
+        /// the FRONT of the fallback chain so every emoji/icon glyph resolves to the bundled font
+        /// on all platforms, never to whatever emoji font the OS happens to ship.
+        /// </summary>
+        private void AddBundledFallbacks(FontAsset body)
+        {
+            var settings = _config.panelTextSettings;
+            if (settings == null || settings.fallbackFontAssets == null) return;
+            if (body.fallbackFontAssetTable == null) body.fallbackFontAssetTable = new List<FontAsset>();
+            foreach (var fa in settings.fallbackFontAssets)
+                if (fa != null && !body.fallbackFontAssetTable.Contains(fa))
+                    body.fallbackFontAssetTable.Add(fa);
         }
 
         // Candidate OS fonts that cover the symbol/emoji glyphs used by the icon system.

@@ -7,7 +7,8 @@
       "Bash(cp Source/frontend/assets/images/plinko/badge_full_drop.png   Assets/WorkoutDrop/Art/Sprites/badge_full_drop.png)",
       "Bash(cp Source/frontend/assets/images/plinko/badge_beast_mode.png  Assets/WorkoutDrop/Art/Sprites/badge_beast_mode.png)",
       "Bash(python3 *)",
-      "Bash(git check-ignore *)"
+      "Bash(git check-ignore *)",
+      "Bash(xargs grep -l \"PanelSettings\\\\|m_Script: {fileID: 11500000, guid: 19102c0bcc9b8e54a8d2e6235c20d7c2\")"
     ]
   }
 }

@@ -17,6 +17,7 @@ MonoBehaviour:
   programs: {fileID: 11400000, guid: 32e9b58377e0bda0d6df2a1df791708e, type: 2}
   globalStyle: {fileID: 7433441132597879392, guid: ef5118592896a0ae4bf292e9c8437460, type: 3}
   bodyFont: {fileID: 12800000, guid: 3090beeac8c496ee82a835ef3a763e39, type: 3}
+  panelTextSettings: {fileID: 11400000, guid: 6b3079440ceb8e147bfc7bdf969aa3fa, type: 2}
   welcomeScreen: {fileID: 9197481963319205126, guid: ebdfcb6bc52ce334b43b08b6663506cc, type: 3}
   homeScreen: {fileID: 9197481963319205126, guid: f214c0ac09e8ed27f25aa531d2202d43, type: 3}
   dropScreen: {fileID: 9197481963319205126, guid: 7c549817fa22e1fd872af19be1c96566, type: 3}

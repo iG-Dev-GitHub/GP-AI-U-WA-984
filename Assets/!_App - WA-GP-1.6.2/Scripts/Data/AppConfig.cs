@@ -37,6 +37,8 @@ namespace WorkoutDrop.Data
         public StyleSheet globalStyle;
         [Tooltip("Body font (TrueType). Falls back to the device system font for missing glyphs / emoji.")]
         public Font bodyFont;
+        [Tooltip("Panel text settings supplying the bundled emoji/icon font (NotoEmoji SDF) for all icon glyphs.")]
+        public PanelTextSettings panelTextSettings;
 
         [Header("Screens (UXML)")]
         public VisualTreeAsset welcomeScreen;
